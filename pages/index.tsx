@@ -15,36 +15,15 @@ import {
 import { BiMoon, BiRevision, BiSun } from "react-icons/bi";
 import { AiFillGithub } from "react-icons/ai";
 import { ImQuotesLeft } from "react-icons/im";
-import { useColorScheme, useLocalStorage } from "@mantine/hooks";
-import { useEffect, useState } from "react";
-import Router from "next/router";
+import { useColorScheme } from "@mantine/hooks";
+import { useState } from "react";
 
 const Home: NextPage = () => {
-  const API_URL = process.env.NEXT_APP_API_URL;
   const preferredColorScheme = useColorScheme();
-  const [quote, setQuote] = useState<any>("");
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
-    key: "mantine-color-scheme",
-    defaultValue: "light",
-    getInitialValueInEffect: true,
-  });
+  const [colorScheme, setColorScheme] =
+    useState<ColorScheme>(preferredColorScheme);
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
-
-  const reloadQuoute = () => {
-    Router.reload();
-  };
-
-  async function handleClicked() {
-    console.log(`${API_URL}/api/quotes`);
-    const apiResponse = await fetch(`${API_URL}/api/quotes`);
-    setQuote(apiResponse);
-  }
-
-  useEffect(() => {
-    handleClicked();
-    console.log(quote);
-  }, []);
 
   return (
     <ColorSchemeProvider
@@ -95,16 +74,16 @@ const Home: NextPage = () => {
             >
               {/* <Title order={5}>Your quote of the day</Title> */}
               {/* if blank author handle it */}
-              <Blockquote
-                icon={<ImQuotesLeft />}
-                cite="– Forrest Gump"
-              ></Blockquote>
+              <Blockquote icon={<ImQuotesLeft />} cite="– Forrest Gump">
+                Let go of your attachment to being right, and suddenly your mind
+                is more open. You're able to benefit from the unique viewpoints
+                of others, without being crippled by your own judgement.
+              </Blockquote>
               <Button
                 color="green"
                 variant="subtle"
                 size="xs"
                 leftIcon={<BiRevision />}
-                onClick={() => reloadQuoute()}
               >
                 Another one
               </Button>
