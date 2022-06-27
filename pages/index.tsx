@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import {
   ActionIcon,
   Blockquote,
@@ -50,6 +49,13 @@ const Home: NextPage = () => {
         withNormalizeCSS
       >
         <Box>
+          <Head>
+            <title>Great Success</title>
+            <meta
+              name="viewport"
+              content="initial-scale=1.0, width=device-width"
+            />
+          </Head>
           <Box
             sx={{
               display: "flex",
@@ -106,9 +112,6 @@ const Home: NextPage = () => {
               >
                 Another one
               </Button>
-              {/* <ActionIcon mt="xl" variant="hover" size="xl" color="cyan">
-                <BiRevision />
-              </ActionIcon> */}
             </Box>
           </Box>
         </Box>
