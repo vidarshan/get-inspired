@@ -15,15 +15,29 @@ import {
 import { BiMoon, BiRevision, BiSun } from "react-icons/bi";
 import { AiFillGithub } from "react-icons/ai";
 import { ImQuotesLeft } from "react-icons/im";
-import { useColorScheme } from "@mantine/hooks";
-import { useState } from "react";
+import { useColorScheme, useLocalStorage } from "@mantine/hooks";
+import { useEffect, useState } from "react";
+import quotes from "./quotes.json";
 
 const Home: NextPage = () => {
   const preferredColorScheme = useColorScheme();
-  const [colorScheme, setColorScheme] =
-    useState<ColorScheme>(preferredColorScheme);
+  const [quote, setQuote] = useState<any>("");
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "mantine-color-scheme",
+    defaultValue: "dark",
+    getInitialValueInEffect: true,
+  });
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  const getQuote = () => {
+    const randomQuote = Math.floor(Math.random() * quotes.length);
+    setQuote(quotes[randomQuote]);
+  };
+
+  useEffect(() => {
+    getQuote();
+  }, []);
 
   return (
     <ColorSchemeProvider
@@ -74,16 +88,21 @@ const Home: NextPage = () => {
             >
               {/* <Title order={5}>Your quote of the day</Title> */}
               {/* if blank author handle it */}
-              <Blockquote icon={<ImQuotesLeft />} cite="– Forrest Gump">
-                Let go of your attachment to being right, and suddenly your mind
-                is more open. You're able to benefit from the unique viewpoints
-                of others, without being crippled by your own judgement.
+              <Blockquote
+                icon={<ImQuotesLeft />}
+                cite={
+                  quote.quoteAuthor === "" ? "Anonymous" : quote.quoteAuthor
+                }
+              >
+                {console.log(quote)}
+                {quote.quoteText}
               </Blockquote>
               <Button
                 color="green"
                 variant="subtle"
                 size="xs"
                 leftIcon={<BiRevision />}
+                onClick={() => getQuote()}
               >
                 Another one
               </Button>
